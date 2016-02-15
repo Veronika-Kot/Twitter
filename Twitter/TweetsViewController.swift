@@ -27,6 +27,9 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
             //reolod table view at this point
         })
         
+        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.estimatedRowHeight = 120
+        
         tableView.dataSource = self
         tableView.delegate = self
         
@@ -38,14 +41,20 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 20
+        if tweets != nil {
+            return tweets!.count
+        } else {
+            return 0
+        }
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("TweetCell", forIndexPath: indexPath) as! TweetViewCell
-        let tweet = tweets?[indexPath.row]
-        cell.textTweetLabebel.text = tweet?.text
-        cell.textTweetLabebel.sizeToFit()
+          cell.tweet = tweets?[indexPath.row]
+//        let tweet = tweets?[indexPath.row]
+//        cell.textTweetLabebel.text = tweet?.text
+//        cell.retweet.text = tweet?.retweetCount as? String
+//        cell.textTweetLabebel.sizeToFit()
         
         
         return cell

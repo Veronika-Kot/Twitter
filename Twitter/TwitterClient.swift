@@ -104,4 +104,27 @@ class TwitterClient: BDBOAuth1SessionManager {
         }
 
     }
+
+    func retweet(num: Int, params: NSDictionary?, completion: (error: NSError?) -> () ){
+        POST("1.1/statuses/retweet/\(num).json", parameters: params, success: { (operation: NSURLSessionDataTask!, response: AnyObject?) -> Void in
+            print("retweeting works")
+            completion(error: nil)
+            }, failure: { (operation: NSURLSessionDataTask?, error: NSError!) -> Void in
+                print("failed to retweet")
+                completion(error: error)
+            }
+        )
+    }
+    
+    func likeTweet(num: Int, params: NSDictionary?, completion: (error: NSError?) -> () ){
+        POST("1.1/favorites/create.json?id=\(num)", parameters: params, success: { (operation: NSURLSessionDataTask!, response: AnyObject?) -> Void in
+            print("Favoriting works")
+            completion(error: nil)
+            }, failure: { (operation: NSURLSessionDataTask?, error: NSError!) -> Void in
+                print("favoriting failed")
+                completion(error: error)
+            }
+        )}
+
+
 }
