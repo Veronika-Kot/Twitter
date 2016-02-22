@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import AFNetworking
 
 class Tweet: NSObject {
     var user: User?
@@ -16,6 +17,7 @@ class Tweet: NSObject {
     var num: String
     var retweetCount: Int?
     var likeCount: Int?
+    
 
     init(dictionary: NSDictionary) {
         user = User(dictionary: dictionary["user"] as! NSDictionary)
@@ -23,7 +25,7 @@ class Tweet: NSObject {
         createdAtString = dictionary ["created_at"] as? String
     
         let formatter = NSDateFormatter()
-        formatter.dateFormat = "EEE MMM d HH: mm:ss Z y"
+        formatter.dateFormat = "EEE MMM d HH:mm:ss Z y"
         createdAt = formatter.dateFromString(createdAtString!)
         
         num = String(dictionary["id"]!)

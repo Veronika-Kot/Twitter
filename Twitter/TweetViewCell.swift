@@ -7,19 +7,25 @@
 //
 
 import UIKit
+import AFNetworking
 
 class TweetViewCell: UITableViewCell {
 
     @IBOutlet weak var retweet: UILabel!
     
-    @IBOutlet weak var profilePicture: UIImageView!
+
     @IBOutlet weak var date: UILabel!
     
-    @IBOutlet weak var retweetImage: UIImageView!
     
-    
+    @IBOutlet weak var profilePicture: UIImageView!
     @IBOutlet weak var likeLabel: UILabel!
-    @IBOutlet weak var favorImage: UIImageView!
+    
+    
+    @IBOutlet weak var likeButton: UIButton!
+
+    @IBOutlet weak var retwieButton: UIButton!
+    
+    
     @IBOutlet weak var screenname: UILabel!
     @IBOutlet weak var name: UILabel!
     @IBOutlet weak var textTweetLabebel: UILabel!
@@ -27,10 +33,42 @@ class TweetViewCell: UITableViewCell {
     var id: String = ""
     @IBOutlet weak var like: UILabel!
     
+
     override func awakeFromNib() {
         super.awakeFromNib()
+//        var defaults = NSUserDefaults.standardUserDefaults()
+//        
+//        if (defaults.objectForKey("OnLike") != nil) {
+//            self.likeButton.setImage(UIImage(named: "like"), forState: UIControlState.Normal)
+//                self.likeLabel.text = String(self.tweet.likeCount! + 1)
+//                defaults.setBool(true, forKey: "OnLike")
+//        }
         // Initialization code
     }
+    
+    @IBAction func onLike(sender: AnyObject) {
+        
+//        var defaults = NSUserDefaults.standardUserDefaults()
+        
+        TwitterClient.sharedInstance.likeTweet(Int(id)!, params: nil, completion: {(error) -> () in
+            self.likeButton.setImage(UIImage(named: "like"), forState: UIControlState.Normal)
+        self.likeLabel.text = String(self.tweet.likeCount! + 1)
+ //           defaults.setBool(true, forKey: "OnLike")
+            
+        })
+    }
+    
+    @IBAction func OnRetwite(sender: AnyObject) {
+        TwitterClient.sharedInstance.retweet(Int(id)!, params: nil, completion: {(error) -> () in
+        self.retwieButton.setImage(UIImage(named: "retweet"), forState: UIControlState.Normal)
+//
+        self.retweet.text = String(self.tweet.retweetCount! + 1)
+      })
+        
+        
+        
+    }
+    
     
     
     var tweet: Tweet! {
@@ -42,13 +80,16 @@ class TweetViewCell: UITableViewCell {
             name.text = tweet.user!.name
             screenname.text = "@\(tweet.user!.screenname!)"
             
-            profilePicture.setImageWithURL(tweet.user!.profileImageUrl!)
+            print(tweet.user!.profileImageUrl!)
             
+            profilePicture.setImageWithURL(tweet.user!.profileImageUrl!)
+
             //date.text = calculateTimeStamp(tweet.createdAt!.timeIntervalSinceNow)
-            //date.text = calculateTimeStamp(tweet.createdAt!.timeIntervalSinceNow)
+            date.text = calculateTimeStamp(tweet.createdAt!.timeIntervalSinceNow) + " ago"
            
             id = tweet.num
             likeLabel.text = String(tweet.likeCount!)
+             date.sizeToFit()
             
         }
     }

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import AFNetworking
 
 class TweetsViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
@@ -16,6 +17,7 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
     @IBAction func onLogout(sender: AnyObject) {
         
         User.currentUser?.logout()
+        User.currentUser = nil
     }
 
     override func viewDidLoad() {
@@ -55,7 +57,7 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
 //        cell.textTweetLabebel.text = tweet?.text
 //        cell.retweet.text = tweet?.retweetCount as? String
 //        cell.textTweetLabebel.sizeToFit()
-        
+         //   cell.profilePicture.setImageWithURL(tweet.user!.ProfileImageURL)
         
         return cell
     }

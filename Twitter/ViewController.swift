@@ -8,14 +8,16 @@
 
 import UIKit
 import BDBOAuth1Manager
+import AFNetworking
 
 
 class ViewController: UIViewController {
 
+    @IBOutlet weak var testImage: UIImageView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-
 
     }
     override func didReceiveMemoryWarning() {

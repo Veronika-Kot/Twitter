@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import AFNetworking
 
 var _currentUser: User?
 let currentUserKey = "kCurrentUserKey"
@@ -29,17 +30,17 @@ class User: NSObject {
         
         let imageURLString = dictionary["profile_image_url"] as? String
         if imageURLString != nil {
-            
             profileImageUrl = NSURL(string: imageURLString!)!
         }
+        
         tagline = dictionary ["description"] as! String?
     }
     
     func logout() {
-        User.currentUser = nil
+        User.currentUser == nil
         TwitterClient.sharedInstance.requestSerializer.removeAccessToken()
         
-        NSNotificationCenter.defaultCenter().postNotificationName( userDidLogoutNotification, object: nil)
+        NSNotificationCenter.defaultCenter().postNotificationName(userDidLogoutNotification, object: nil)
     }
 
     class var currentUser: User? {

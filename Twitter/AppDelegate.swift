@@ -8,6 +8,7 @@
 
 import UIKit
 import BDBOAuth1Manager
+import AFNetworking
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -23,8 +24,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         if User.currentUser != nil {
             //Go to the logged in screen
-            print("Current user detected: \(User.currentUser?.name)")
-            var vc =  storyboard.instantiateViewControllerWithIdentifier("TweetsViewController") as UIViewController
+            print("Current user detected: \(User.currentUser!.name)")
+            let vc =  storyboard.instantiateViewControllerWithIdentifier("TweetsViewController") as UIViewController
             window?.rootViewController = vc
         }
         
@@ -32,7 +33,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func userDidLogout() {
-        var vc =  storyboard.instantiateInitialViewController()! as UIViewController
+        let vc =  storyboard.instantiateInitialViewController()! as UIViewController
         window?.rootViewController = vc
         
     }
