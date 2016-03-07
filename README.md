@@ -54,7 +54,7 @@ Describe any challenges encountered while building the app.
     limitations under the License.
     
     
-    # Project 5 - *Twitter*
+# Project 5 - *Twitter*
 
 Time spent: **20** hours spent in total
 
