@@ -2,13 +2,12 @@
 //  AppDelegate.swift
 //  Twitter
 //
-//  Created by Veronika Kotckovich on 2/8/16.
+//  Created by Veronika Kotckovich on 2/9/16.
 //  Copyright © 2016 Veronika Kotckovich. All rights reserved.
 //
 
 import UIKit
 import BDBOAuth1Manager
-import AFNetworking
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -16,26 +15,51 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     var storyboard = UIStoryboard(name: "Main", bundle: nil)
 
-
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "userDidLogout", name: userDidLogoutNotification, object: nil)
         
         if User.currentUser != nil {
-            //Go to the logged in screen
-            print("Current user detected: \(User.currentUser!.name)")
-            let vc =  storyboard.instantiateViewControllerWithIdentifier("TweetsViewController") as UIViewController
+            // Go to logged in screen
+            print("Current user detected: \(User.currentUser?.name)")
+            let vc = storyboard.instantiateViewControllerWithIdentifier("TweetsNavViewController") as UIViewController
             window?.rootViewController = vc
+            //instantiateTabBar()
         }
         
         return true
     }
     
-    func userDidLogout() {
-        let vc =  storyboard.instantiateInitialViewController()! as UIViewController
-        window?.rootViewController = vc
+    func instantiateTabBar() {
         
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        
+        window = UIWindow(frame: UIScreen.mainScreen().bounds)
+        
+        // Tweets home timeline endpoint
+        let tweetsHomeTimelineNavController = storyboard.instantiateViewControllerWithIdentifier("TweetsHomeNavViewController") as! UINavigationController
+        let tweetsHomeTimelineViewController = tweetsHomeTimelineNavController.topViewController as! TweetsViewController
+        tweetsHomeTimelineViewController.endpoint = "home_timeline"
+        tweetsHomeTimelineNavController.tabBarItem.title = "Home Timeline"
+        
+        // Tweets user timeline endpoint
+        let tweetsUserTimelineNavController = storyboard.instantiateViewControllerWithIdentifier("TweetsUserNavController") as! UINavigationController
+        let tweetsUserTimelineViewController = tweetsUserTimelineNavController.topViewController as! TweetsViewController
+        tweetsUserTimelineViewController.endpoint = "user_timeline"
+        tweetsUserTimelineNavController.tabBarItem.title = "User Timeline"
+        
+        // Tab bar controller setup
+        let tabBarController = UITabBarController()
+        tabBarController.viewControllers = [tweetsHomeTimelineNavController, tweetsUserTimelineNavController]
+        
+        window?.rootViewController = tabBarController
+        window?.makeKeyAndVisible()
+    }
+    
+    func userDidLogout() {
+        let vc = storyboard.instantiateInitialViewController()! as UIViewController
+        window?.rootViewController = vc
     }
 
     func applicationWillResignActive(application: UIApplication) {
@@ -61,9 +85,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func application(application: UIApplication, openURL url: NSURL, sourceApplication: String?, annotation: AnyObject) -> Bool {
-        
         TwitterClient.sharedInstance.openURL(url)
         return true
     }
+
 }
 
